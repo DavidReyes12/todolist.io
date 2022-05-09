@@ -1,8 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import App from './App';
+import { SessionContext } from "./config/State";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+const session = {
+  userName: "David Reyes",
+  id: 1,
+  welcomeMsg: ""
+};
+
+const setSession = () => {};
+
+describe('App test', () => {
+  test('App test with Snapshot', () =>{
+      const tree = renderer.create(
+        <SessionContext.Provider value={{session, setSession}}>
+          <App />          
+        </SessionContext.Provider>
+      ).toJSON();
+      expect(tree).toMatchSnapshot();
+  })
+})
